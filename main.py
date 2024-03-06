@@ -5,7 +5,7 @@ import uvicorn
 from core.config import settings
 from fastapi import FastAPI
 
-from core.database import engine
+from deprecated.database import engine
 
 from sqlalchemy import MetaData, Table, and_, select
 
