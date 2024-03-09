@@ -28,7 +28,7 @@ def create_dynamic_table(table_name, columns_info, metadata):
 
 # 데이터베이스 연결 및 메타데이터 객체 생성
 engine = create_engine(
-    "mariadb+pymysql://root:aa04190825!!@localhost:3307/main", echo=True)
+    "mariadb+pymysql://root:0000@localhost:3306/main", echo=True)
 metadata = MetaData()
 
 # 컬럼 정보 예시: (컬럼 이름, 타입, 옵션)

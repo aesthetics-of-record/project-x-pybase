@@ -5,7 +5,7 @@ from sqlalchemy import text, create_engine
 _databases = ["main"]
 
 _engine = create_engine(
-    "mariadb+pymysql://root:aa04190825!!@localhost:3307")
+    "mariadb+pymysql://root:0000@localhost:3306")
 
 # 각 데이터베이스에 대해 CREATE DATABASE 실행
 for db_name in _databases:
