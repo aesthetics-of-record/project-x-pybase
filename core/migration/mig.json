@@ -1,0 +1,40 @@
+[
+    {
+        "id": "dbid1",
+        "name": "db1",
+        "table": [
+            {
+                "id": "tableid1",
+                "name": "table1",
+                "schema": [
+                    {
+                        "id": "schemaid1",
+                        "name": "title",
+                        "type": "TEXT"
+                    },
+                    {
+                        "id": "schemaid2",
+                        "name": "content",
+                        "type": "TEXT"
+                    }
+                ]
+            },
+            {
+                "id": "tableid2",
+                "name": "table2",
+                "schema": [
+                    {
+                        "id": "schemaid1",
+                        "name": "title2",
+                        "type": "TEXT"
+                    },
+                    {
+                        "id": "schemaid2",
+                        "name": "content2",
+                        "type": "TEXT"
+                    }
+                ]
+            }
+        ]
+    }
+]

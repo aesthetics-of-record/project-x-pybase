@@ -5,7 +5,7 @@ from enum import Enum as Enum_Class
 # 컬럼 타입을 SQLAlchemy 타입으로 매핑
 
 
-def map_column_type(column_type: str, enum_values: Optional[List[str]]):
+def map_column_type(column_type: str, enum_values: Optional[List[str]] = None):
     if column_type == 'ENUM' and not (enum_values):
         raise ValueError(f"ENUM type need enum_values")
 

@@ -1,53 +1,33 @@
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.ext.asyncio import async_sessionmaker
-
 import uvicorn
-from core.config import settings
 from fastapi import FastAPI
-
-from deprecated.database import engine
-
-from sqlalchemy import MetaData, Table, and_, select
-
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     yield
-#     if sessionmanager._engine is not None:
-#         # Close the DB connection
-#         await sessionmanager.close()
+from core.migration.import_database import import_database
+from models.import_json import import_json_model
+from core.crud import CRUD
+from core.database import get_all
 
 
-########### 만약 데이터베이스 스키마 형태 User 이 없을 경우에 #######
-metadata = MetaData()
-metadata.bind = engine
-
-# 'users' 테이블을 메타데이터로 로드 (리플렉션)
-users_table = Table('users', metadata, autoload_with=engine)
-##################################################################
-
-
-# create an async session object for CRUD
-session = async_sessionmaker(bind=engine, expire_on_commit=False)
-
-
-app = FastAPI(title=settings.project_name,
+app = FastAPI(title="zetabase",
               docs_url="/api/docs")
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 
+crud = CRUD()
+
 @app.get("/")
 async def root():
-    return {"message": "Async, FasAPI, PostgreSQL, JWT authntication, Alembic migrations Boilerplate"}
+    a = get_all('migrations')
+    return a
 
 
-@app.get('/api/user')
-async def get_user():
-    async with session() as session:
-        statement = select(users_table).order_by(users_table.c.id)
+@app.post('/api/import')
+async def migration_json(import_json: import_json_model):
+    databases = [db.model_dump() for db in import_json]
 
-    result = await session.execute(statement)
 
-    return result.scalars()
+    import_database(databases)
+    return {"message": "마이그레이션 성공"}
+
 
 
 if __name__ == "__main__":
