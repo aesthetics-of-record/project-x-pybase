@@ -2,36 +2,67 @@
     {
         "id": "dbid1",
         "name": "db1",
-        "table": [
+        "table_list": [
             {
                 "id": "tableid1",
                 "name": "table1",
-                "schema": [
+                "schema_list": [
                     {
                         "id": "schemaid1",
-                        "name": "title",
-                        "type": "TEXT"
+                        "name": "id",
+                        "type": "UUID",
+                        "option": {
+                            "nullable": false,
+                            "primary_key": true,
+                            "unique": false
+                        }
                     },
                     {
                         "id": "schemaid2",
+                        "name": "title",
+                        "type": "TEXT",
+                        "option": {
+                            "nullable": true,
+                            "primary_key": false,
+                            "unique": false
+                        }
+                    },
+                    {
+                        "id": "schemaid3",
                         "name": "content",
-                        "type": "TEXT"
+                        "type": "TEXT",
+                        "option": {
+                            "nullable": true,
+                            "primary_key": false,
+                            "unique": false
+                        }
                     }
                 ]
             },
             {
                 "id": "tableid2",
                 "name": "table2",
-                "schema": [
+                "schema_list": [
                     {
                         "id": "schemaid1",
                         "name": "title2",
-                        "type": "TEXT"
+                        "type": "ENUM",
+                        "option": {
+                            "nullable": true,
+                            "primary_key": false,
+                            "unique": false
+                        },
+                        "enum_value_list": ["enum1", "enum2"]
                     },
                     {
                         "id": "schemaid2",
                         "name": "content2",
-                        "type": "TEXT"
+                        "type": "TEXT", 
+                        "option": {
+                            "unique": true,
+                            "primary_key": false,
+                            "nullable": false
+                        }
                     }
                 ]
             }

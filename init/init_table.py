@@ -4,7 +4,7 @@ from sqlalchemy import DateTime, Boolean, Table, Column, Integer, MetaData,  cre
 _metadata = MetaData()
 
 _engine = create_engine(
-    "mariadb+pymysql://root:0000@localhost:3306/main")
+    "mariadb+mysqlclient://root:0000@localhost:3306/main")
 
 
 # 테이블 정의
@@ -23,4 +23,4 @@ migrations_table = Table('migrations', _metadata,
                          Column('json', JSON))
 
 # 테이블 적용
-_metadata.create_all(bind=_engine)
+_metadata.create_all(bind=_engine, checkfirst=True)

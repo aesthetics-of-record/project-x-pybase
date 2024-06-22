@@ -1,57 +1,20 @@
-from core.table.create_table import create_dynamic_table
-from models.import_json import import_json_model
-
-json_data = [
-    {
-        "id": "dbid1",
-        "name": "db1",
-        "table": [
-            {
-                "id": "tableid1",
-                "name": "table1",
-                "schema": [
-                    {
-                        "id": "schemaid1",
-                        "name": "title",
-                        "type": "TEXT"
-                    },
-                    {
-                        "id": "schemaid2",
-                        "name": "content",
-                        "type": "TEXT"
-                    }
-                ]
-            },
-            {
-                "id": "tableid2",
-                "name": "table2",
-                "schema": [
-                    {
-                        "id": "schemaid1",
-                        "name": "title2",
-                        "type": "TEXT"
-                    },
-                    {
-                        "id": "schemaid2",
-                        "name": "content2",
-                        "type": "TEXT"
-                    }
-                ]
-            }
-        ]
-    }
-]
+from core.table.create_table import create_table
+from models.migration import database_json_model
 
 
-def import_database(import_json: import_json_model):
-    for db in import_json:
-        for table in db.get('table'):
+
+def json_to_database(json: database_json_model):
+    # TODO : 중복된 DB 이름 검사
+
+    # TODO : 중복된 DB__테이블 이름 검사
+
+    for db in json:
+        for table in db.get('table_list'):
             table_info = []
-            for schema in table.get('schema'):
-                table_info.append((schema.get('name'), schema.get('type'), {}))
+            for schema in table.get('schema_list'):
+                table_info.append((schema.get('name'), schema.get('type'), schema.get('option'), schema.get("enum_values")))
 
-            create_dynamic_table(table.get('name'), table_info)
-
+            create_table(f"{db.get('name')}__{table.get('name')}", table_info)
 
 
 

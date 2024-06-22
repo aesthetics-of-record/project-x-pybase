@@ -1,20 +1,42 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
-from sqlalchemy import select
+from sqlalchemy import MetaData, Table, select
+from sqlalchemy.orm import declarative_base
+from core.database import SessionLocal, engine
 
 class CRUD:
-    async def get_all(self, table_name: str, async_session: async_sessionmaker[AsyncSession]):
+    def __init__(self, engine, session):
+        self.metadata = MetaData()
+        self.Base = declarative_base()
+        self.engine = engine
+        self.session = session
+
+    def create_table_class(self, table_name: str):
+        table = Table(table_name, self.metadata, autoload_with=self.engine)
+        return type(table_name, (self.Base,), {'__table__': table})
+
+    def model_to_dict(self, instance, keys):
+        """모델 인스턴스와 속성 이름의 리스트를 받아, 순서가 지정된. 딕셔너리를 반환합니다."""
+        return {key: getattr(instance, key, None) for key in keys}
+
+
+
+    def get_list(self, table_name: str, offset: int, limit: int):
         """
-        Get all note objects from db
+        table_name(테이블명)
+        offset(시작할 행)
+        limit(반환할 결과 수)
         """
-        async with async_session() as session:
-            # table = get_table_metadata(table_name=table_name)
+        Table = self.create_table_class(table_name)
+        with self.session() as session:
+            stmt = select(Table).limit(limit).offset(offset)
+            results = session.execute(stmt).scalars().all()
 
-            print(table)
-            statement = select([table])
+            # 모델의 컬럼 순서를 유지하도록 딕셔너리 생성
+            keys = Table.__table__.columns.keys()
 
-            print(statement)
-
-            return ""
+            # 데이터를 순서가 지정된 딕셔너리로 변환하여 리스트에 추가
+            ordered_data = [self.model_to_dict(instance, keys) for instance in results]
+            
+            return ordered_data
 
     # async def add(self, async_session: async_sessionmaker[AsyncSession], note: Note):
     #     """
